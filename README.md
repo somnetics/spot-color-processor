@@ -32,6 +32,8 @@ Spring Boot 2.7.x
 
 iText PDF 5.5.13.2
 
+TwelveMonkeys ImageIO
+
 Apache Commons IO
 
 ## 📦 Build Instructions
