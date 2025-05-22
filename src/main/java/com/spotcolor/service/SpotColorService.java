@@ -44,6 +44,8 @@ public class SpotColorService {
     // convert content to uppercase
     content = content.toUpperCase();
 
+    System.out.println(originalSpotColors);
+
     // loop spot colores from proof pdf
     for (int i = 0; i < originalSpotColors.size(); i++) {
       // get color object
@@ -109,11 +111,13 @@ public class SpotColorService {
     // get ovelay content
     PdfContentByte over = stamper.getOverContent(1);
 
-    for (int i = 0; i < spotColors.size(); i++) {
+    for (int i = 0; i < spotColors.size() - 1; i++) {
       Map<String, Object> color = spotColors.get(i);
 
       @SuppressWarnings("unchecked")
       ArrayList<Float> cmyk = (ArrayList<Float>) color.get("cmyk");
+
+      System.out.println(cmyk);
 
       // Define spot color with name and value
       PdfSpotColor spotColor = new PdfSpotColor((String) color.get("name"),

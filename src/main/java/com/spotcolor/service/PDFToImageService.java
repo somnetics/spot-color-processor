@@ -42,13 +42,13 @@ public class PDFToImageService {
       // loop pdf pages
       for (int page = 0; page < document.getNumberOfPages(); page++) {
         // render page
-        BufferedImage renderedImage = pdfRenderer.renderImageWithDPI(page, 96);
+        BufferedImage renderedImage = pdfRenderer.renderImageWithDPI(page, 100);
 
         // convert to 1 bit black and white image
-        // BufferedImage bwImage = convertTo1BitBlackWhite(renderedImage);
+        BufferedImage bwImage = convertTo1BitBlackWhite(renderedImage);
 
         // get image buffer
-        IIOImage iioImage = new IIOImage(renderedImage, null, null);
+        IIOImage iioImage = new IIOImage(bwImage, null, null);
 
         // get the writer
         ImageWriteParam param = writer.getDefaultWriteParam();
@@ -72,8 +72,8 @@ public class PDFToImageService {
     int width = source.getWidth();
     int height = source.getHeight();
 
-    BufferedImage bw = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
-    Graphics2D g2d = bw.createGraphics();
+    // BufferedImage bw = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
+    // Graphics2D g2d = bw.createGraphics();
 
     // Convert to grayscale first
     BufferedImage gray = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
@@ -82,9 +82,9 @@ public class PDFToImageService {
     gGray.dispose();
 
     // Draw gray into black and white binary
-    g2d.drawImage(gray, 0, 0, null);
-    g2d.dispose();
+    // g2d.drawImage(gray, 0, 0, null);
+    // g2d.dispose();
 
-    return bw;
+    return gray;
   }
 }

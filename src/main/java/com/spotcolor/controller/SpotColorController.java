@@ -41,8 +41,7 @@ public class SpotColorController {
     this.ImageToText = new ImageToTextService();
     this.tika = new Tika();
   }
-
-  @SuppressWarnings("null")
+  
   @PostMapping(path = "/apply-spot-colors")
   public ResponseEntity<?> applySpotColors(
       @RequestHeader(name = "Authorization", required = false) String authHeader,
@@ -98,16 +97,21 @@ public class SpotColorController {
 
       // after file is processed delete it if exists
       if (file.exists()) {
-        if (!file.delete()) {
-          throw new RuntimeException("Failed to delete the file.");
-        }
+        // if (!file.delete()) {
+        //   throw new RuntimeException("Failed to delete the file.");
+        // }
       } else {
         System.err.println("File does not exist.");
         throw new RuntimeException("File does not exist.");
       }
 
+      
+      System.err.println(content);
+
       // get the spot colors
       List<Map<String, Object>> colors = SpotColor.readSpotColors(content, proofFile.getBytes());
+
+      System.err.println(colors);
 
       // apply the spot colors
       ByteArrayOutputStream output = SpotColor.applySpotColors(logoFile.getBytes(), colors);

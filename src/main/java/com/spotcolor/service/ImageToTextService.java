@@ -13,9 +13,10 @@ public class ImageToTextService {
         imageFilePath,
         "stdout",
         "-l", "eng",
-        "--dpi", "96",
+        "--dpi", "100",
         "--oem", "1",
-        "--psm", "3");
+        "--psm", "11"
+        );
 
     // set error stream
     processBuilder.redirectErrorStream(true); // Merge stderr with stdout
