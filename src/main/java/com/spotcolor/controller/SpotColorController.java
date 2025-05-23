@@ -41,7 +41,7 @@ public class SpotColorController {
     this.ImageToText = new ImageToTextService();
     this.tika = new Tika();
   }
-  
+
   @PostMapping(path = "/apply-spot-colors")
   public ResponseEntity<?> applySpotColors(
       @RequestHeader(name = "Authorization", required = false) String authHeader,
@@ -98,15 +98,14 @@ public class SpotColorController {
       // after file is processed delete it if exists
       if (file.exists()) {
         // if (!file.delete()) {
-        //   throw new RuntimeException("Failed to delete the file.");
+        // throw new RuntimeException("Failed to delete the file.");
         // }
       } else {
         System.err.println("File does not exist.");
         throw new RuntimeException("File does not exist.");
       }
 
-      
-      System.err.println(content);
+      // System.err.println(content);
 
       // get the spot colors
       List<Map<String, Object>> colors = SpotColor.readSpotColors(content, proofFile.getBytes());
@@ -114,8 +113,14 @@ public class SpotColorController {
       System.err.println(colors);
 
       // apply the spot colors
-      ByteArrayOutputStream output = SpotColor.applySpotColors(logoFile.getBytes(), colors);
+      ByteArrayOutputStream output1 = SpotColor.applySpotColorsToDocument(logoFile.getBytes(), colors);
 
+      List<Map<String, Object>> Acolors = SpotColor.getAppliedSpotColors(output1.toByteArray(), colors);
+
+      System.err.println(Acolors);
+
+      ByteArrayOutputStream output = SpotColor.applySpotColorsToLayers(output1.toByteArray(), Acolors);
+    
       // create the pdf file content to byte
       byte[] pdfBytes = output.toByteArray();
 
@@ -128,6 +133,7 @@ public class SpotColorController {
           .body(pdfBytes);
 
     } catch (Exception e) {
+      System.err.println(e.getMessage());
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Failed to process file"));
     }
   }
